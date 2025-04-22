@@ -5,6 +5,7 @@ import (
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/kernel/power"
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount/templateMessage/request"
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount/templateMessage/response"
+	"github.com/cellargalaxy/go_common/util"
 	"github.com/sirupsen/logrus"
 )
 
@@ -46,7 +47,14 @@ func getTemplates(ctx context.Context, req any) ([]*response.Template, error) {
 	return resp.TemplateList, err
 }
 
-func SendTemplateMessageWithUrl(ctx context.Context, name string, url string, data map[string]string) {
+func SendTemplateText(ctx context.Context, name string, url string, text string) {
+	data := make(map[string]string)
+	data["logid"] = util.GetLogIdString(ctx)
+	data["sn"] = util.GetEnv("sn")
+	data["text"] = text
+	SendTemplateData(ctx, name, url, data)
+}
+func SendTemplateData(ctx context.Context, name string, url string, data map[string]string) {
 	templateId, err := GetTemplateId(ctx, name)
 	if templateId == "" || err != nil {
 		logrus.WithContext(ctx).WithFields(logrus.Fields{"err": err}).Error("发送模板消息，查询模板为空")

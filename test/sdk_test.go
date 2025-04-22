@@ -8,5 +8,5 @@ import (
 
 func TestSendTemplateMessageWithUrl(t *testing.T) {
 	ctx := util.GenCtx()
-	sdk.SendTemplateMessageWithUrl(ctx, "通用消息", "https://baidu.com", map[string]string{"logid": "logid", "sn": "sn", "text": "text"})
+	sdk.SendTemplateText(ctx, "通用消息", "https://baidu.com", "我是消息")
 }
