@@ -50,7 +50,7 @@ func getTemplates(ctx context.Context, req any) ([]*response.Template, error) {
 func SendTemplateText(ctx context.Context, name string, url string, text string) {
 	data := make(map[string]string)
 	data["logid"] = util.GetLogIdString(ctx)
-	data["sn"] = util.GetEnv("sn")
+	data["sn"] = util.GetServerName()
 	data["text"] = text
 	SendTemplateData(ctx, name, url, data)
 }
