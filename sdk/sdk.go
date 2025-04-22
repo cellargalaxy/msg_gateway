@@ -1,4 +1,4 @@
-package main
+package sdk
 
 import (
 	"context"
@@ -27,7 +27,14 @@ func GetUsers() []string {
 var Sdk *officialAccount.OfficialAccount
 
 func InitSdk(ctx context.Context) error {
+	var log officialAccount.Log
+	log.Stdout = false
+	//log.Level = "debug"
+	log.Level = "error"
+	log.File = "/tmp/wechat_info.log"
+	log.Error = "/tmp/wechat_info.log"
 	var cfg officialAccount.UserConfig
+	cfg.Log = log
 	cfg.AppID = GetAppId()
 	cfg.Secret = GetSecret()
 	logrus.WithContext(ctx).WithFields(logrus.Fields{"cfg": util.ToJsonString(cfg)}).Info("初始化SDK")
