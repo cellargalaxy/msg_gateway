@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/ArtisanCloud/PowerWeChat/v3 v3.4.9
-	github.com/cellargalaxy/go_common v0.0.0-20250424073446-bbaae7125f38
+	github.com/cellargalaxy/go_common v0.0.0-20250424081038-bd85c508ab02
 	github.com/sirupsen/logrus v1.9.3
 )
 
