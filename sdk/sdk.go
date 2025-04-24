@@ -37,7 +37,7 @@ func InitSdk(ctx context.Context) error {
 	cfg.Log = log
 	cfg.AppID = GetAppId()
 	cfg.Secret = GetSecret()
-	logrus.WithContext(ctx).WithFields(logrus.Fields{"cfg": util.ToJsonString(cfg)}).Info("初始化SDK")
+	logrus.WithContext(ctx).WithFields(logrus.Fields{"cfg": util.JsonStruct2String(cfg)}).Info("初始化SDK")
 	if cfg.AppID == "" || cfg.Secret == "" {
 		logrus.WithContext(ctx).WithFields(logrus.Fields{}).Error("初始化SDK，参数为空")
 		return fmt.Errorf("初始化SDK，参数为空")
