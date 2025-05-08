@@ -51,6 +51,7 @@ func SendTemplateText(ctx context.Context, name string, url string, text string)
 	data := make(map[string]string)
 	data["logid"] = util.GetLogIdString(ctx)
 	data["sn"] = util.GetServerName()
+	data["ip"] = util.GetIp()
 	data["text"] = text
 	SendTemplateData(ctx, name, url, data)
 }
