@@ -16,3 +16,4 @@
 
 .idea
 msg_gateway
+*.log

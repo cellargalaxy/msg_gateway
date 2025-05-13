@@ -7,8 +7,16 @@ import (
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount/templateMessage/response"
 	"github.com/cellargalaxy/go_common/util"
 	"github.com/sirupsen/logrus"
+	"time"
 )
 
+var templateIdCache = util.NewLocalCache[string]()
+
+func GetTemplateIdCache(ctx context.Context, name string) (string, error) {
+	return templateIdCache.GetWithTimeout(ctx, name, time.Hour, func() (string, error) {
+		return GetTemplateId(ctx, name)
+	})
+}
 func GetTemplateId(ctx context.Context, name string) (string, error) {
 	value, err := GetTemplate(ctx, name)
 	if err != nil {
@@ -56,7 +64,7 @@ func SendTemplateText(ctx context.Context, name string, url string, text string)
 	SendTemplateData(ctx, name, url, data)
 }
 func SendTemplateData(ctx context.Context, name string, url string, data map[string]string) {
-	templateId, err := GetTemplateId(ctx, name)
+	templateId, err := GetTemplateIdCache(ctx, name)
 	if templateId == "" || err != nil {
 		logrus.WithContext(ctx).WithFields(logrus.Fields{"err": err}).Error("发送模板消息，查询模板为空")
 		return
