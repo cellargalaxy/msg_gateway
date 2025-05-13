@@ -2,6 +2,7 @@ package sdk
 
 import (
 	"context"
+	"fmt"
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/kernel/power"
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount/templateMessage/request"
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount/templateMessage/response"
@@ -13,9 +14,16 @@ import (
 var templateIdCache = util.NewLocalCache[string]()
 
 func GetTemplateIdCache(ctx context.Context, name string) (string, error) {
-	return templateIdCache.GetWithTimeout(ctx, name, time.Hour, func() (string, error) {
+	value, err := templateIdCache.GetWithTimeout(ctx, fmt.Sprintf("long-%s", name), time.Hour, func() (string, error) {
 		return GetTemplateId(ctx, name)
 	})
+	if value != "" || err != nil {
+		return value, err
+	}
+	value, err = templateIdCache.GetWithTimeout(ctx, fmt.Sprintf("short-%s", name), time.Minute*5, func() (string, error) {
+		return GetTemplateId(ctx, name)
+	})
+	return value, err
 }
 func GetTemplateId(ctx context.Context, name string) (string, error) {
 	value, err := GetTemplate(ctx, name)
